@@ -14,6 +14,8 @@ public class Person {
     @Column(nullable = false)
     private String name;
     @Column
+    private String Dep;
+    @Column
     private Date jobdate;   //参加工作时间
     @Column
     private Integer infoState;  //状态，非0为存在
@@ -48,6 +50,14 @@ public class Person {
 
     public void setInfoState(Integer infoState) {
         this.infoState = infoState;
+    }
+
+    public String getDep() {
+        return Dep;
+    }
+
+    public void setDep(String dep) {
+        Dep = dep;
     }
 
     public Person() {

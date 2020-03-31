@@ -20,7 +20,6 @@ public class PersonController {
         }else {
             return "添加失败";
         }
-
     }
 
     @GetMapping("/delete")
@@ -45,6 +44,16 @@ public class PersonController {
     public List<Person> findAll() {
         List<Person> people = personService.findAll();
         return people;
+    }
+
+    @GetMapping("/findByName")
+    public List<Person> findByName(String name) {
+        return personService.findByName(name);
+    }
+
+    @GetMapping("/findByDep")
+    public List<Person> findByDel(String dep) {
+        return personService.findByDel(dep);
     }
 }
 

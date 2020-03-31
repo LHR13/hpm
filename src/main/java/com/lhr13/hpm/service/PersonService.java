@@ -61,4 +61,12 @@ public class PersonService {
         }
         return people;
     }
+
+    public List<Person> findByName(String name) {
+        return personDAO.findByName(name);
+    }
+
+    public List<Person> findByDel(String dep) {
+        return personDAO.findByDep(dep);
+    }
 }

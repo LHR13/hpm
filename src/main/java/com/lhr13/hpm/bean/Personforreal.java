@@ -16,13 +16,15 @@ public class Personforreal {
     @Column
     private String sex;
     @Column
+    private String Dep;     //部门
+    @Column
     private String root;    //籍贯
     @Column
     private String political;   //政治面貌
     @Column
     private Date jobdate;   //参加工作时间
     @Column
-    private Integer isProfessionDoc;    //是否是执业医师，非0为是
+    private Integer isProDoc;    //是否是执业医师，非0为是
     @Column
     private Date PDdate;    //职业医师证书日期
     @Column
@@ -30,11 +32,9 @@ public class Personforreal {
     @Column
     private Date MDSdate;   //助理医师证书日期
     @Column
-    private String CertificateID;   //资格证书编号
+    private String CtfID;   //资格证书编号
     @Column
     private String reference;   //执业范围
-    @Column
-    private String title;   //职称
     @Column
     private String IDNum;   //身份证号码
     @Column
@@ -66,6 +66,14 @@ public class Personforreal {
         this.sex = sex;
     }
 
+    public String getDep() {
+        return Dep;
+    }
+
+    public void setDep(String dep) {
+        Dep = dep;
+    }
+
     public String getRoot() {
         return root;
     }
@@ -90,12 +98,12 @@ public class Personforreal {
         this.jobdate = jobdate;
     }
 
-    public Integer getIsProfessionDoc() {
-        return isProfessionDoc;
+    public Integer getIsProDoc() {
+        return isProDoc;
     }
 
-    public void setIsProfessionDoc(Integer isProfessionDoc) {
-        this.isProfessionDoc = isProfessionDoc;
+    public void setIsProDoc(Integer isProDoc) {
+        this.isProDoc = isProDoc;
     }
 
     public Date getPDdate() {
@@ -122,12 +130,12 @@ public class Personforreal {
         this.MDSdate = MDSdate;
     }
 
-    public String getCertificateID() {
-        return CertificateID;
+    public String getCtfID() {
+        return CtfID;
     }
 
-    public void setCertificateID(String certificateID) {
-        CertificateID = certificateID;
+    public void setCtfID(String ctfID) {
+        CtfID = ctfID;
     }
 
     public String getReference() {
@@ -136,14 +144,6 @@ public class Personforreal {
 
     public void setReference(String reference) {
         this.reference = reference;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getIDNum() {
