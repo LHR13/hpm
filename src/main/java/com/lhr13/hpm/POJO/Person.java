@@ -1,16 +1,15 @@
-package com.lhr13.hpm.bean;
+package com.lhr13.hpm.POJO;
 
 
 import javax.persistence.*;
 import java.sql.Date;
-
 
 @Entity(name = "personfortest")
 public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(nullable = false)
     private String name;
     @Column
@@ -20,11 +19,16 @@ public class Person {
     @Column
     private Integer infoState;  //状态，非0为存在
 
-    public Integer getId() {
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "CW_id")
+    private CW cw;
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,6 +40,14 @@ public class Person {
         this.name = name;
     }
 
+    public String getDep() {
+        return Dep;
+    }
+
+    public void setDep(String dep) {
+        Dep = dep;
+    }
+
     public Date getJobdate() {
         return jobdate;
     }
@@ -43,21 +55,13 @@ public class Person {
     public void setJobdate(Date jobdate) {
         this.jobdate = jobdate;
     }
-    
+
     public Integer getInfoState() {
         return infoState;
     }
 
     public void setInfoState(Integer infoState) {
         this.infoState = infoState;
-    }
-
-    public String getDep() {
-        return Dep;
-    }
-
-    public void setDep(String dep) {
-        Dep = dep;
     }
 
     public Person() {

@@ -1,6 +1,6 @@
 package com.lhr13.hpm.service;
 
-import com.lhr13.hpm.bean.Person;
+import com.lhr13.hpm.POJO.Person;
 import com.lhr13.hpm.dao.PersonDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class PersonService {
         }
     }
 
-    public Boolean deleteById(Integer id) {
+    public Boolean deleteById(Long id) {
         Person person = personDAO.findById(id).orElse(null);
         if (person != null) {
             person.setInfoState(0);
@@ -45,7 +45,7 @@ public class PersonService {
         }
     }
 
-    public Person findById(Integer id) {
+    public Person findById(Long id) {
             return personDAO.findById(id).orElse(null);
 
     }

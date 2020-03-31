@@ -1,4 +1,4 @@
-package com.lhr13.hpm.bean;
+package com.lhr13.hpm.POJO;
 
 
 import javax.persistence.*;
