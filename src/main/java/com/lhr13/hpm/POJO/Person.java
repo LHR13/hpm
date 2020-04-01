@@ -19,9 +19,9 @@ public class Person {
     @Column
     private Integer infoState;  //状态，非0为存在
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "CW_id")
-    private CW cw;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cw_id", referencedColumnName = "id")
+    private Cw cw;
 
 
     public Long getId() {
