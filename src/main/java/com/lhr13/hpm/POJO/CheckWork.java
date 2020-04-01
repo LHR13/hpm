@@ -2,8 +2,8 @@ package com.lhr13.hpm.POJO;
 
 import javax.persistence.*;
 
-@Entity(name = "cw")
-public class Cw {
+@Entity(name = "checkwork")
+public class CheckWork {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +20,26 @@ public class Cw {
     @Column
     private Integer goearly;        //早退次数
     @Column
-    private Integer leave;          //请假次数
+    private Integer leave1;          //请假次数
 
-    @OneToOne(mappedBy = "cw")
+    @OneToOne
     private Person person;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getNormal() {
         return normal;
@@ -57,30 +73,11 @@ public class Cw {
         this.goearly = goearly;
     }
 
-    public Integer getLeave() {
-        return leave;
+    public Integer getLeave1() {
+        return leave1;
     }
 
-    public void setLeave(Integer leave) {
-        this.leave = leave;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Cw() {
+    public void setLeave1(Integer leave1) {
+        this.leave1 = leave1;
     }
 }
