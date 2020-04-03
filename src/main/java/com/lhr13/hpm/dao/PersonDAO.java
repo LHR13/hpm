@@ -11,6 +11,10 @@ import java.util.List;
 public interface PersonDAO extends JpaRepository<Person, Long> {
     List<Person> findByName(String name);
 
-    @Query(value = "SELECT * FROM personfortest WHERE Dep = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM person WHERE Dep = ?1", nativeQuery = true)
     List<Person> findByDep(String dep);
+
+    @Query(value = "SELECT * FROM checkwork JOIN person ON p.checkWork_id = c.id", nativeQuery = true)
+    List<Person> findByCheckWork_Id(String name);
+
 }

@@ -25,6 +25,10 @@ public class Salary {
     @Transient
     private Double finalSalary;     //最终工资
 
+    @OneToOne()
+    private Person person;
+
+    //构造函数和Getter、Setter
     public Long getId() {
         return id;
     }
