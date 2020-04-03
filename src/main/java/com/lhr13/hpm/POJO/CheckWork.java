@@ -25,6 +25,7 @@ public class CheckWork {
     @OneToOne
     private Person person;
 
+    //构造函数，getter/setter
     public Long getId() {
         return id;
     }

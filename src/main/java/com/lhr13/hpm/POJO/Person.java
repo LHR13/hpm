@@ -40,12 +40,19 @@ public class Person {
     @Column
     private String phone;   //电话
     @Column
+    private String mail;  //邮箱
+    @Column
     private Integer infoState;  //状态，非0为存在
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn()
     private CheckWork checkWork;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private Salary salary;
+
+    //构造函数和Getter、Setter
     public CheckWork getCheckWork() {
         return checkWork;
     }
@@ -72,6 +79,14 @@ public class Person {
 
     public String getSex() {
         return sex;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public void setSex(String sex) {
