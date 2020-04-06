@@ -2,11 +2,16 @@ package com.lhr13.hpm.POJO;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 
 @Entity(name = "person")
-public class Person {
+@NamedEntityGraph(name = "personList", attributeNodes = {
+        @NamedAttributeNode("salary"),
+        @NamedAttributeNode("checkWork")
+})
+public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +60,14 @@ public class Person {
     //构造函数和Getter、Setter
     public CheckWork getCheckWork() {
         return checkWork;
+    }
+
+    public Salary getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Salary salary) {
+        this.salary = salary;
     }
 
     public void setCheckWork(CheckWork checkWork) {

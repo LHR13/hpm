@@ -1,9 +1,10 @@
 package com.lhr13.hpm.POJO;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "checkwork")
-public class CheckWork {
+public class CheckWork implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

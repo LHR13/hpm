@@ -2,6 +2,7 @@ package com.lhr13.hpm.controller;
 
 import com.lhr13.hpm.POJO.Person;
 
+import com.lhr13.hpm.POJO.Salary;
 import com.lhr13.hpm.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class PersonController {
     }
 
     @GetMapping("/delete")
-    public String delById(@RequestBody Person person) {
-        if (personService.deleteById(person.getId())) {
+    public String delByName(@RequestBody Person person) {
+        if (personService.delete(person)) {
             return "删除成功";
         }else {
             return "删除失败";
@@ -34,7 +35,7 @@ public class PersonController {
 
     @PostMapping("/update")
     public String upById(@RequestBody Person person) {
-        if (personService.updById(person)) {
+        if (personService.update(person)) {
             return "更新成功";
         }else {
             return "更新失败";
@@ -47,14 +48,17 @@ public class PersonController {
         return people;
     }
 
-    @GetMapping("/findByName")
-    public List<Person> findByName(String name) {
-        return personService.findByName(name);
-    }
 
     @GetMapping("/findByDep")
     public List<Person> findByDel(String dep) {
         return personService.findByDel(dep);
     }
+
+    @GetMapping("/findByName")
+    public List<Person> findByName(String name) {
+        return personService.findByName(name);
+    }
+
+
 }
 
