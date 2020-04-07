@@ -1,5 +1,6 @@
 package com.lhr13.hpm;
 
+import com.lhr13.hpm.service.SalaryService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

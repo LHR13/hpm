@@ -1,10 +1,14 @@
 package com.lhr13.hpm.POJO;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "salary")
-//@NamedEntityGraph(name = "salaryList", attributeNodes = @NamedAttributeNode("person"))
+@NamedEntityGraph(name = "salaryList", attributeNodes = @NamedAttributeNode("person"))
 public class Salary implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +32,9 @@ public class Salary implements Serializable {
     private Double finalSalary;     //最终工资
 
     @OneToOne()
+    @JsonIgnoreProperties({"salary"})
     private Person person;
+
 
     //构造函数和Getter、Setter
     public Long getId() {

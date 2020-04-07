@@ -1,16 +1,19 @@
 package com.lhr13.hpm.POJO;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
 
 @Entity(name = "person")
-//@NamedEntityGraph(name = "personList", attributeNodes = {
-//        @NamedAttributeNode("salary"),
-//        @NamedAttributeNode("checkWork")
-//})
+@NamedEntityGraph(name = "personList", attributeNodes = {
+        @NamedAttributeNode("salary"),
+        @NamedAttributeNode("checkWork")
+})
 public class Person implements Serializable {
 
     @Id
@@ -55,6 +58,7 @@ public class Person implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
+    @JsonIgnoreProperties({"person"})
     private Salary salary;
 
     //构造函数和Getter、Setter

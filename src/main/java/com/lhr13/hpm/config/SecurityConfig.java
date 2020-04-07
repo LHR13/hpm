@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder.encode("123")).roles("ADMIN","USER","DBA");
+                .withUser("111").password(passwordEncoder.encode("111")).roles("ADMIN","USER","DBA");
     }
 
 //    @Override             //开启验证
@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authenticated()
 //                .and()
 //                .formLogin()
-////                .loginPage("/login_page")
+//                .loginPage("/login_page")
 //                .loginProcessingUrl("/login")
 //                .usernameParameter("name")
 //                .passwordParameter("passwd")
@@ -127,7 +127,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutSuccessHandler(new LogoutSuccessHandler() {
 //                    @Override
 //                    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-////                        httpServletResponse.sendRedirect("login_page");
+//                        httpServletResponse.sendRedirect("login_page");
 //                    }
 //                })
 //                .and()
