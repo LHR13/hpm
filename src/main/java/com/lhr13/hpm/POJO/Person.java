@@ -7,10 +7,10 @@ import java.sql.Date;
 
 
 @Entity(name = "person")
-@NamedEntityGraph(name = "personList", attributeNodes = {
-        @NamedAttributeNode("salary"),
-        @NamedAttributeNode("checkWork")
-})
+//@NamedEntityGraph(name = "personList", attributeNodes = {
+//        @NamedAttributeNode("salary"),
+//        @NamedAttributeNode("checkWork")
+//})
 public class Person implements Serializable {
 
     @Id

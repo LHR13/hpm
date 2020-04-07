@@ -1,8 +1,6 @@
 package com.lhr13.hpm.controller;
 
 import com.lhr13.hpm.POJO.Person;
-
-import com.lhr13.hpm.POJO.Salary;
 import com.lhr13.hpm.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +56,5 @@ public class PersonController {
     public List<Person> findByName(String name) {
         return personService.findByName(name);
     }
-
-
 }
 

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "salary")
+//@NamedEntityGraph(name = "salaryList", attributeNodes = @NamedAttributeNode("person"))
 public class Salary implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,14 @@ public class Salary implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Double getBwage() {

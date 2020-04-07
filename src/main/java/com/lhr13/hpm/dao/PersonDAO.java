@@ -20,7 +20,7 @@ public interface PersonDAO extends JpaRepository<Person, Long> {
 //    @Query(value = "SELECT salary_id FROM person WHERE name = ?1", nativeQuery = true)
 //    Long findSalaryByPersonName(String name);
 
-    @EntityGraph(value = "personList", type = EntityGraph.EntityGraphType.FETCH)
+//    @EntityGraph(value = "personList", type = EntityGraph.EntityGraphType.FETCH)
     List<Person> findAll();
 
 
