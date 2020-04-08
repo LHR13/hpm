@@ -32,7 +32,7 @@ public class Salary implements Serializable {
     private Double finalSalary;     //最终工资
 
     @OneToOne()
-    @JsonIgnoreProperties({"salary"})
+    @JsonIgnoreProperties({"salary", "checkwork"})
     private Person person;
 
 

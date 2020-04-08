@@ -1,17 +1,18 @@
 package com.lhr13.hpm.POJO;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "checkwork")
+@NamedEntityGraph(name = "checkworkList", attributeNodes = @NamedAttributeNode("person"))
 public class CheckWork implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
     @Column
     private Integer normal;         //正常出勤次数
     @Column
@@ -24,6 +25,7 @@ public class CheckWork implements Serializable {
     private Integer leave1;          //请假次数
 
     @OneToOne
+    @JsonIgnoreProperties({"checkwork", "salary"})
     private Person person;
 
     //构造函数，getter/setter
@@ -33,14 +35,6 @@ public class CheckWork implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getNormal() {
@@ -81,5 +75,13 @@ public class CheckWork implements Serializable {
 
     public void setLeave1(Integer leave1) {
         this.leave1 = leave1;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

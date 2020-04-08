@@ -1,7 +1,6 @@
 package com.lhr13.hpm.POJO;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.sql.Date;
 @Entity(name = "person")
 @NamedEntityGraph(name = "personList", attributeNodes = {
         @NamedAttributeNode("salary"),
-        @NamedAttributeNode("checkWork")
+        @NamedAttributeNode("checkwork")
 })
 public class Person implements Serializable {
 
@@ -54,16 +53,17 @@ public class Person implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn()
-    private CheckWork checkWork;
+    @JsonIgnoreProperties("person")
+    private CheckWork checkwork;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    @JsonIgnoreProperties({"person"})
+    @JsonIgnoreProperties("person")
     private Salary salary;
 
     //构造函数和Getter、Setter
-    public CheckWork getCheckWork() {
-        return checkWork;
+    public CheckWork getCheckwork() {
+        return checkwork;
     }
 
     public Salary getSalary() {
@@ -74,8 +74,8 @@ public class Person implements Serializable {
         this.salary = salary;
     }
 
-    public void setCheckWork(CheckWork checkWork) {
-        this.checkWork = checkWork;
+    public void setCheckwork(CheckWork checkwork) {
+        this.checkwork = checkwork;
     }
 
     public Long getId() {

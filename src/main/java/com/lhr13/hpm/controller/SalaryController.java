@@ -14,8 +14,6 @@ public class SalaryController {
     @Autowired
     private SalaryService salaryService;
 
-
-
     @GetMapping("/findAll")
     public List<Salary> findAll() {
         List<Salary> salaries = salaryService.findAll();

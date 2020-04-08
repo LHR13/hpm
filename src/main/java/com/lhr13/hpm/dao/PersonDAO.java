@@ -17,9 +17,6 @@ public interface PersonDAO extends JpaRepository<Person, Long> {
     @Query(value = "SELECT * FROM person WHERE Dep = ?1", nativeQuery = true)
     List<Person> findByDep(String dep);
 
-//    @Query(value = "SELECT salary_id FROM person WHERE name = ?1", nativeQuery = true)
-//    Long findSalaryByPersonName(String name);
-
     @EntityGraph(value = "personList", type = EntityGraph.EntityGraphType.FETCH)
     List<Person> findAll();
 
