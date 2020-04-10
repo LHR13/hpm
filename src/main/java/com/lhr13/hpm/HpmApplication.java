@@ -8,13 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class HpmApplication {
 
-//    public static void main(String[] args) {
-//        SpringApplication.run(HpmApplication.class, args);
-//    }
-public static void main(String[] args) throws Exception {
-    MailService service = new MailService();
-    service.sendSimpleMail("1309184697@qq.com", "1309184697@qq.com", "LHR13", "fsd", "fsdf");
-}
+    public static void main(String[] args) {
+        SpringApplication.run(HpmApplication.class, args);
+    }
+//public static void main(String[] args) throws Exception {
+//    MailService service = new MailService();
+//    service.sendSimpleMail("1309184697@qq.com", "1309184697@qq.com", "LHR13", "fsd", "fsdf");
+//}
 
 
 }

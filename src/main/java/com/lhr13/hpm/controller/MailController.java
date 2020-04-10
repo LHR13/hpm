@@ -18,10 +18,14 @@ public class MailController {
     public String sendSimpleMail(String from, String to, String cc,
                                String subject, String content) {
         try {
-            mailService.sendSimpleMail(from, to, cc, subject, content);
+            if (cc != null) {
+                mailService.sendSimpleMail(from, to, cc, subject, content);
+            }else {
+                mailService.sendSimpleMail(from, to, subject, content);
+            }
         } catch (Exception e) {
-            System.out.println("邮件发送失败" + e.getMessage());
-            return "邮件发送失败" + e.getMessage();
+            System.out.println("邮件发送失败 " + e.getMessage());;
+            return "邮件发送失败 " + e.getMessage();
         }
         return "邮件发送成功";
     }
