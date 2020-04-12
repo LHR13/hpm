@@ -28,5 +28,6 @@ public class MailController {
             return "邮件发送失败 " + e.getMessage();
         }
         return "邮件发送成功";
+
     }
 }
