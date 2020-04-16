@@ -1,5 +1,7 @@
 package com.lhr13.hpm.service;
 
+import com.lhr13.hpm.POJO.Person;
+import com.lhr13.hpm.dao.PersonDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,7 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
     @Autowired
-    JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    private PersonDAO personDAO;
 
     public void sendSimpleMail (String from, String to,
                                 String subject, String content) throws Exception{
@@ -29,7 +34,6 @@ public class MailService {
         simpleMailMessage.setCc(cc);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(content);
-        System.out.println(simpleMailMessage.toString());
         javaMailSender.send(simpleMailMessage);
     }
 }

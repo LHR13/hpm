@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 @CrossOrigin
 @RestController
 @RequestMapping("/export")
@@ -18,7 +16,12 @@ public class ExportController {
     private ExportService exportService;
 
     @GetMapping("/person")
-    public ResponseEntity<byte[]> export2Excel() {
-        return exportService.export2Excel();
+    public ResponseEntity<byte[]> pexport2Excel() {
+        return exportService.pexport2Excel();
+    }
+
+    @GetMapping("/salary")
+    public ResponseEntity<byte[]> sexport2Excel() {
+        return exportService.sexport2Excel();
     }
 }

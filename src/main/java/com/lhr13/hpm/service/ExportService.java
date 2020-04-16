@@ -1,7 +1,11 @@
 package com.lhr13.hpm.service;
 
+import com.lhr13.hpm.POJO.CheckWork;
 import com.lhr13.hpm.POJO.Person;
+import com.lhr13.hpm.POJO.Salary;
+import com.lhr13.hpm.dao.CheckWorkDAO;
 import com.lhr13.hpm.dao.PersonDAO;
+import com.lhr13.hpm.dao.SalaryDAO;
 import org.apache.poi.hpsf.DocumentSummaryInformation;
 import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.hssf.usermodel.*;
@@ -13,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -27,12 +29,23 @@ public class ExportService {
     @Autowired
     PersonDAO personDAO;
 
-    public ResponseEntity<byte[]> export2Excel() {
+    @Autowired
+    CheckWorkDAO checkWorkDAO;
+
+    @Autowired
+    SalaryDAO salaryDAO;
+
+    public ResponseEntity<byte[]> pexport2Excel() {
         List<Person> person = personDAO.findAll();
-        return exportPer2Exc(person);
+        return pexportPer2Exc(person);
     }
 
-    private static ResponseEntity<byte[]> exportPer2Exc(List<Person> people) {
+    public ResponseEntity<byte[]> sexport2Excel() {
+        List<Salary> salaries = salaryDAO.findAll();
+        return sexportPer2Exc(salaries);
+    }
+
+    private static ResponseEntity<byte[]> pexportPer2Exc(List<Person> people) {
         HttpHeaders headers = new HttpHeaders();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -127,6 +140,82 @@ public class ExportService {
 
         return new ResponseEntity<byte[]>(baos.toByteArray(), headers,
         HttpStatus.CREATED);
+    }
+
+    private static ResponseEntity<byte[]> sexportPer2Exc(List<Salary> salaries) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        HSSFWorkbook workbook = new HSSFWorkbook();
+
+        try {
+            //创建文档
+            //创建文档摘要
+            workbook.createInformationProperties();
+            //获取文档信息并配置
+            DocumentSummaryInformation dsi = workbook.getDocumentSummaryInformation();
+            //文档类别
+            dsi.setCategory("员工工资信息");
+            dsi.setManager("admin");
+            dsi.setCompany("xxx hospital");
+
+
+            SummaryInformation si = workbook.getSummaryInformation();
+            si.setSubject("员工工资信息表");
+            si.setTitle("员工工资信息");
+            si.setAuthor("admin");
+
+            HSSFSheet sheet = workbook.createSheet("hpm人员工资信息表");
+
+            HSSFCellStyle dateStyle = workbook.createCellStyle();
+            dateStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("yy/m/d"));
+
+            HSSFCellStyle headStyle = workbook.createCellStyle();
+            headStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
+            headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            for (int i = 0; i < 16; i++) {
+                sheet.setColumnWidth(i, 20 * 256);
+            }
+
+
+            HSSFRow headerRow = sheet.createRow(0);
+            HSSFCell cell0 = getCell(headerRow,"编号", headStyle, 0);
+            HSSFCell cell1 = getCell(headerRow,"姓名", headStyle, 1);
+            HSSFCell cell2 = getCell(headerRow,"基本工资", headStyle, 2);
+            HSSFCell cell3 = getCell(headerRow,"绩效工资", headStyle, 3);
+            HSSFCell cell4 = getCell(headerRow,"奖金", headStyle, 4);
+            HSSFCell cell5 = getCell(headerRow,"补贴", headStyle, 5);
+            HSSFCell cell6 = getCell(headerRow,"社保扣款", headStyle, 6);
+            HSSFCell cell7 = getCell(headerRow,"个人所得税", headStyle, 7);
+            HSSFCell cell8 = getCell(headerRow,"罚款", headStyle, 8);
+            HSSFCell cell9 = getCell(headerRow,"最终工资", headStyle, 9);
+
+
+            for (int i = 0; i < salaries.size(); i++) {
+                HSSFRow row = sheet.createRow(i + 1);
+                Salary salary = salaries.get(i);
+                row.createCell(0).setCellValue(salary.getPerson().getId());
+                row.createCell(1).setCellValue(salary.getPerson().getName());
+                row.createCell(2).setCellValue(salary.getBwage());
+                row.createCell(3).setCellValue(salary.getMwage());
+                row.createCell(4).setCellValue(salary.getReward());
+                row.createCell(5).setCellValue(salary.getSubsidy());
+                row.createCell(6).setCellValue(salary.getSodeductions());
+                row.createCell(7).setCellValue(salary.getIncometax());
+                row.createCell(8).setCellValue(salary.getFine());
+//                row.createCell(9).setCellValue(salary.getFinalSalary());
+            }
+
+            headers.setContentDispositionFormData("attachment",
+                    new String("员工工资表.xls".getBytes("UTF-8"), "iso-8859-1"));
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            workbook.write(baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(baos.toByteArray(), headers,
+                HttpStatus.CREATED);
     }
 
     private static HSSFCell getCell(HSSFRow headerRow, String name, HSSFCellStyle headStyle, int column) {

@@ -12,8 +12,8 @@ public class HpmApplication {
         SpringApplication.run(HpmApplication.class, args);
     }
 //public static void main(String[] args) throws Exception {
-//    MailService service = new MailService();
-//    service.sendSimpleMail("1309184697@qq.com", "1309184697@qq.com", "LHR13", "fsd", "fsdf");
+//    Double a = null;
+//    System.out.println(a);
 //}
 
 

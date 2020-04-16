@@ -1,10 +1,14 @@
 package com.lhr13.hpm.POJO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@DynamicInsert
+@DynamicUpdate
 @Entity(name = "checkwork")
 @NamedEntityGraph(name = "checkworkList", attributeNodes = @NamedAttributeNode("person"))
 public class CheckWork implements Serializable {

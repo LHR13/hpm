@@ -1,9 +1,6 @@
 package com.lhr13.hpm.POJO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,19 +12,19 @@ public class Salary implements Serializable {
     private Long id;
 
     @Column
-    private Double bwage;       //基本工资
+    private Double bwage = 0.0;       //基本工资
     @Column
-    private Double mwage;       //绩效工资
+    private Double mwage = 0.0;       //绩效工资
     @Column
-    private Double reward;      //奖金
+    private Double reward = 0.0;      //奖金
     @Column
-    private Double subsidy;      //补贴
+    private Double subsidy = 0.0;      //补贴
     @Column
-    private Double sodeductions;    //社保扣款
+    private Double sodeductions = 0.0;    //社保扣款
     @Column
-    private Double incometax;       //个人所得税
+    private Double incometax = 0.0;       //个人所得税
     @Column
-    private Double fine;            //罚款
+    private Double fine = 0.0;            //罚款
     @Transient
     private Double finalSalary;     //最终工资
 
@@ -106,7 +103,7 @@ public class Salary implements Serializable {
     }
 
     public void setFine(Double fine) {
-        this.fine = fine;
+        this.fine = this.bwage + this.mwage + this.reward + this.subsidy - this.sodeductions - this.incometax - this.fine;
     }
 
     public Double getFinalSalary() {
