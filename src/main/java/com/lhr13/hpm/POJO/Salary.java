@@ -30,8 +30,6 @@ public class Salary implements Serializable {
     private Double incometax = 0.0;       //个人所得税
     @Column
     private Double fine = 0.0;            //罚款
-    @Transient
-    private Double finalSalary;     //最终工资
 
     @OneToOne()
     @JsonIgnoreProperties({"salary", "checkwork"})
@@ -108,15 +106,7 @@ public class Salary implements Serializable {
     }
 
     public void setFine(Double fine) {
-        this.fine = this.bwage + this.mwage + this.reward + this.subsidy - this.sodeductions - this.incometax - this.fine;
-    }
-
-    public Double getFinalSalary() {
-        return finalSalary;
-    }
-
-    public void setFinalSalary(Double finalSalary) {
-        this.finalSalary = finalSalary;
+        this.fine = fine;
     }
 
     public Salary() {

@@ -36,13 +36,18 @@ public class ExportService {
     SalaryDAO salaryDAO;
 
     public ResponseEntity<byte[]> pexport2Excel() {
-        List<Person> person = personDAO.findAll();
-        return pexportPer2Exc(person);
+        List<Person> people = personDAO.findAll();
+        return pexportPer2Exc(people);
     }
 
     public ResponseEntity<byte[]> sexport2Excel() {
         List<Salary> salaries = salaryDAO.findAll();
         return sexportPer2Exc(salaries);
+    }
+
+    public ResponseEntity<byte[]> cexport2Excel() {
+        List<CheckWork> checkWorks = checkWorkDAO.findAll();
+        return cexportPer2Exc(checkWorks);
     }
 
     private static ResponseEntity<byte[]> pexportPer2Exc(List<Person> people) {
@@ -60,7 +65,6 @@ public class ExportService {
             dsi.setCategory("员工信息");
             dsi.setManager("admin");
             dsi.setCompany("xxx hospital");
-
 
             SummaryInformation si = workbook.getSummaryInformation();
             si.setSubject("员工信息表");
@@ -203,11 +207,88 @@ public class ExportService {
                 row.createCell(6).setCellValue(salary.getSodeductions());
                 row.createCell(7).setCellValue(salary.getIncometax());
                 row.createCell(8).setCellValue(salary.getFine());
-//                row.createCell(9).setCellValue(salary.getFinalSalary());
+                row.createCell(9).setCellValue((salary.getBwage() +
+                                                        salary.getMwage() +
+                                                        salary.getReward() +
+                                                        salary.getSubsidy() -
+                                                        salary.getSodeductions() -
+                                                        salary.getIncometax() -
+                                                        salary.getFine()));
             }
 
             headers.setContentDispositionFormData("attachment",
                     new String("员工工资表.xls".getBytes("UTF-8"), "iso-8859-1"));
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            workbook.write(baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(baos.toByteArray(), headers,
+                HttpStatus.CREATED);
+    }
+
+    private static ResponseEntity<byte[]> cexportPer2Exc(List<CheckWork> checkWorks) {
+        HttpHeaders headers = new HttpHeaders();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        HSSFWorkbook workbook = new HSSFWorkbook();
+
+        try {
+            //创建文档
+            //创建文档摘要
+            workbook.createInformationProperties();
+            //获取文档信息并配置
+            DocumentSummaryInformation dsi = workbook.getDocumentSummaryInformation();
+            //文档类别
+            dsi.setCategory("员工考勤信息");
+            dsi.setManager("admin");
+            dsi.setCompany("xxx hospital");
+
+
+            SummaryInformation si = workbook.getSummaryInformation();
+            si.setSubject("员工考勤信息表");
+            si.setTitle("员工考勤信息");
+            si.setAuthor("admin");
+
+            HSSFSheet sheet = workbook.createSheet("hpm人员考勤信息表");
+
+            HSSFCellStyle dateStyle = workbook.createCellStyle();
+            dateStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("yy/m/d"));
+
+            HSSFCellStyle headStyle = workbook.createCellStyle();
+            headStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
+            headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            for (int i = 0; i < 16; i++) {
+                sheet.setColumnWidth(i, 20 * 256);
+            }
+
+
+            HSSFRow headerRow = sheet.createRow(0);
+            HSSFCell cell0 = getCell(headerRow,"编号", headStyle, 0);
+            HSSFCell cell1 = getCell(headerRow,"姓名", headStyle, 1);
+            HSSFCell cell2 = getCell(headerRow,"正常出勤次数", headStyle, 2);
+            HSSFCell cell3 = getCell(headerRow,"异常出勤次数", headStyle, 3);
+            HSSFCell cell4 = getCell(headerRow,"迟到次数", headStyle, 4);
+            HSSFCell cell5 = getCell(headerRow,"早退次数", headStyle, 5);
+            HSSFCell cell6 = getCell(headerRow,"请假次数", headStyle, 6);
+
+
+            for (int i = 0; i < checkWorks.size(); i++) {
+                HSSFRow row = sheet.createRow(i + 1);
+                CheckWork checkWork = checkWorks.get(i);
+                row.createCell(0).setCellValue(checkWork.getPerson().getId());
+                row.createCell(1).setCellValue(checkWork.getPerson().getName());
+                row.createCell(2).setCellValue(checkWork.getNormal());
+                row.createCell(3).setCellValue(checkWork.getAbnormal());
+                row.createCell(4).setCellValue(checkWork.getLate());
+                row.createCell(5).setCellValue(checkWork.getGoearly());
+                row.createCell(6).setCellValue(checkWork.getLeave1());
+
+            }
+
+            headers.setContentDispositionFormData("attachment",
+                    new String("员工考勤表.xls".getBytes("UTF-8"), "iso-8859-1"));
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             workbook.write(baos);
         } catch (IOException e) {

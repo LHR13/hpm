@@ -25,5 +25,8 @@ public class ExportController {
         return exportService.sexport2Excel();
     }
 
-
+    @GetMapping("/checkwork")
+    public ResponseEntity<byte[]> cexport2Excel() {
+        return exportService.cexport2Excel();
+    }
 }
