@@ -1,7 +1,11 @@
 package com.lhr13.hpm.service;
 
+import com.lhr13.hpm.POJO.CheckWork;
 import com.lhr13.hpm.POJO.Person;
+import com.lhr13.hpm.POJO.Salary;
+import com.lhr13.hpm.dao.CheckWorkDAO;
 import com.lhr13.hpm.dao.PersonDAO;
+import com.lhr13.hpm.dao.SalaryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Iterator;
@@ -11,9 +15,17 @@ public class PersonService {
 
     @Autowired
     PersonDAO personDAO;
+    @Autowired
+    SalaryDAO salaryDAO;
+    @Autowired
+    CheckWorkDAO checkWorkDAO;
 
     public Boolean add(Person person) {
+        Salary salary = new Salary();
+        person.setSalary(salary);
+        salaryDAO.save(salary);
         Person save = personDAO.save(person);
+        salary.setPerson(personDAO.getOne(save.getId()));
         if (save != null) {
             return true;
         }else {

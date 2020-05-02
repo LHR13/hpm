@@ -38,18 +38,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Override       //关闭验证
-    public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .anyRequest()
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
-    }
+//    @Override       //关闭验证
+//    public void configure(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity
+//                .csrf()
+//                .disable()
+//                .authorizeRequests()
+//                .anyRequest()
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll();
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -57,81 +57,81 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("111").password(passwordEncoder.encode("111")).roles("ADMIN","USER","DBA");
     }
 
-//    @Override             //开启验证
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/admin/**")
-//                .hasRole("ADMIN")
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login_page")
-//                .loginProcessingUrl("/login")
-//                .usernameParameter("name")
-//                .passwordParameter("passwd")
-//                .successHandler(new AuthenticationSuccessHandler() {
-//                    @Override
-//                    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-//                        Object principal = authentication.getPrincipal();
-//                        httpServletResponse.setContentType("application/json;charset=utf-8");
-//                        PrintWriter out = httpServletResponse.getWriter();
-//                        httpServletResponse.setStatus(200);
-//                        Map<String, Object> map = new HashMap<>();
-//                        map.put("status",200);
-//                        map.put("msg",principal);
-//                        ObjectMapper om = new ObjectMapper();
-//                        out.write(om.writeValueAsString(map));
-//                        out.flush();
-//                        out.close();
-//                    }
-//                })
-//                .failureHandler(new AuthenticationFailureHandler() {
-//                    @Override
-//                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-//                        httpServletResponse.setContentType("application/json;charset=utf-8");
-//                        PrintWriter out = httpServletResponse.getWriter();
-//                        httpServletResponse.setStatus(401);
-//                        Map<String, Object> map = new HashMap<>();
-//                        map.put("status", 401);
-//                        if (e instanceof LockedException) {
-//                            map.put("msg", "账户被锁定");
-//                        }else if (e instanceof BadCredentialsException) {
-//                            map.put("msg", "用户名或密码错误");
-//                        }else if (e instanceof DisabledException) {
-//                            map.put("msg", "账户被禁用");
-//                        }else if (e instanceof AccountExpiredException) {
-//                            map.put("msg", "账户已过期");
-//                        }else if (e instanceof CredentialsExpiredException) {
-//                            map.put("msg", "密码已过期");
-//                        }else {
-//                            map.put("msg", "登陆失败");
-//                        }
-//                        ObjectMapper om = new ObjectMapper();
-//                        out.write(om.writeValueAsString(map));
-//                        out.flush();
-//                        out.close();
-//                    }
-//                })
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .clearAuthentication(true)
-//                .invalidateHttpSession(true)
-//                .addLogoutHandler(new LogoutHandler() {
-//                    @Override
-//                    public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
-//                    }
-//                })
-//                .logoutSuccessHandler(new LogoutSuccessHandler() {
-//                    @Override
-//                    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-//                        httpServletResponse.sendRedirect("login_page");
-//                    }
-//                })
-//                .and()
-//                .csrf()
-//                .disable();
-//    }
+    @Override             //开启验证
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/admin/**")
+                .hasRole("ADMIN")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login_page")
+                .loginProcessingUrl("/login")
+                .usernameParameter("name")
+                .passwordParameter("passwd")
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                        Object principal = authentication.getPrincipal();
+                        httpServletResponse.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = httpServletResponse.getWriter();
+                        httpServletResponse.setStatus(200);
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("status",200);
+                        map.put("msg",principal);
+                        ObjectMapper om = new ObjectMapper();
+                        out.write(om.writeValueAsString(map));
+                        out.flush();
+                        out.close();
+                    }
+                })
+                .failureHandler(new AuthenticationFailureHandler() {
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+                        httpServletResponse.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = httpServletResponse.getWriter();
+                        httpServletResponse.setStatus(401);
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("status", 401);
+                        if (e instanceof LockedException) {
+                            map.put("msg", "账户被锁定");
+                        }else if (e instanceof BadCredentialsException) {
+                            map.put("msg", "用户名或密码错误");
+                        }else if (e instanceof DisabledException) {
+                            map.put("msg", "账户被禁用");
+                        }else if (e instanceof AccountExpiredException) {
+                            map.put("msg", "账户已过期");
+                        }else if (e instanceof CredentialsExpiredException) {
+                            map.put("msg", "密码已过期");
+                        }else {
+                            map.put("msg", "登陆失败");
+                        }
+                        ObjectMapper om = new ObjectMapper();
+                        out.write(om.writeValueAsString(map));
+                        out.flush();
+                        out.close();
+                    }
+                })
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .addLogoutHandler(new LogoutHandler() {
+                    @Override
+                    public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
+                    }
+                })
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                        httpServletResponse.sendRedirect("login_page");
+                    }
+                })
+                .and()
+                .csrf()
+                .disable();
+    }
 }
