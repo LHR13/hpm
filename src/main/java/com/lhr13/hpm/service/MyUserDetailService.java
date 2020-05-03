@@ -10,10 +10,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MyUserDetailService implements UserDetailsService {
 
     @Autowired
@@ -22,14 +24,18 @@ public class MyUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //从数据库读取用户
-        User user = userDAO.findByUsername(username);
+        List<User> users = userDAO.findByUsername(username);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("此用户不存在");
+        for (User user : users) {
+            if (user == null) {
+                System.out.println("此用户不存在");
+                throw new UsernameNotFoundException("此用户不存在");
+            }
+
+            user.setAuthorities(AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRoles()));
+            return user;
         }
-
-        user.setAuthorities(AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRoles()));
-        return user;
+        return null;
     }
 
     //权限转换

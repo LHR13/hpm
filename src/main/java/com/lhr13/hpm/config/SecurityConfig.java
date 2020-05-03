@@ -1,6 +1,7 @@
 package com.lhr13.hpm.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lhr13.hpm.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -32,8 +33,11 @@ import java.util.Map;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
+        return new BCryptPasswordEncoder();
     }
+
+    @Autowired
+    MyUserDetailService myUserDetailService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -51,25 +55,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .permitAll();
 //    }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("111").password(passwordEncoder.encode("111")).roles("ADMIN","USER","DBA");
-    }
-
     @Override             //开启验证
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin/**")
-                .hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login_page")
                 .loginProcessingUrl("/login")
-                .usernameParameter("name")
-                .passwordParameter("passwd")
+                .loginPage("/login_page.html")
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
@@ -127,11 +123,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
                     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                        httpServletResponse.sendRedirect("login_page");
+                        httpServletResponse.sendRedirect("/login_page.html");
                     }
                 })
                 .and()
                 .csrf()
                 .disable();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(myUserDetailService);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/login_page.html");
     }
 }
