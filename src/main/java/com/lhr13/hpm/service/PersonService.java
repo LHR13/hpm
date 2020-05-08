@@ -21,16 +21,21 @@ public class PersonService {
     CheckWorkDAO checkWorkDAO;
 
     public Boolean add(Person person) {
-        Salary salary = new Salary();
-        person.setSalary(salary);
-        salaryDAO.save(salary);
-        Person save = personDAO.save(person);
-        salary.setPerson(personDAO.getOne(save.getId()));
-        if (save != null) {
+        try {
+            Salary salary = new Salary();
+            CheckWork checkWork = new CheckWork();
+            person.setSalary(salary);
+            person.setCheckwork(checkWork);
+            salary.setPerson(person);
+            checkWork.setPerson(person);
+            personDAO.save(person);
+            salaryDAO.save(salary);
+            checkWorkDAO.save(checkWork);
             return true;
-        }else {
+        }catch (Exception e) {
             return false;
         }
+
     }
 
     public Boolean delete(Person person) {
