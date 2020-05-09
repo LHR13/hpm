@@ -19,29 +19,51 @@ public class FileUploadService {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd/");
     List<String> filesPath = new ArrayList<>();
 
-    public String upload(MultipartFile uploadFile, HttpServletRequest request) {
-        String realPath =
-                request.getSession().getServletContext().getRealPath("/uploadFile/");
-        String format = simpleDateFormat.format(new Date());
-        File folder = new File(realPath + format);
-        if (!folder.isDirectory()) {
-            folder.mkdirs();
+    public String upload(MultipartFile file){
+        if(file.isEmpty()){
+            return "false";
         }
-        String oldName = uploadFile.getOriginalFilename();  //得到上传的文件名
-        String newName = UUID.randomUUID().toString() +
-                oldName.substring(oldName.lastIndexOf("."));
+        String fileName = file.getOriginalFilename();
+        int size = (int) file.getSize();
+        System.out.println(fileName + "-->" + size);
+        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\guidingbookfiles" ;
+        File dest = new File(path + "/" + fileName);
+        if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+            dest.getParentFile().mkdir();
+        }
         try {
-            uploadFile.transferTo(new File(folder, newName));   //springMVC封装的方法，用于将上传的文件保存在服务器上
-            String filePath = request.getScheme() + "://" + request.getServerName() +
-                    ":" + request.getServerPort() + "/uploadFile/" + format + newName;
-            return "上传成功";    //getScheme()：request.getScheme() 返回当前链接使用的协议
-            //比如，一般应用返回http;SSL返回https;
-            //getServerPort()：getServerPort获取的是URL请求的端口
-        } catch (IOException e) {
+            file.transferTo(dest); //保存文件
+            return "上传成功";
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
+            return "上传失败";
         }
-        return "上传失败";
     }
+
+//    public String upload(MultipartFile uploadFile, HttpServletRequest request) {
+//        String realPath =
+//                request.getSession().getServletContext().getRealPath("/uploadFile/");
+//        String format = simpleDateFormat.format(new Date());
+//        File folder = new File(realPath + format);
+//        if (!folder.isDirectory()) {
+//            folder.mkdirs();
+//        }
+//        String oldName = uploadFile.getOriginalFilename();  //得到上传的文件名
+//        String newName = UUID.randomUUID().toString() +
+//                oldName.substring(oldName.lastIndexOf("."));
+//        try {
+//            uploadFile.transferTo(new File(folder, newName));   //springMVC封装的方法，用于将上传的文件保存在服务器上
+//            String filePath = request.getScheme() + "://" + request.getServerName() +
+//                    ":" + request.getServerPort() + "/uploadFile/" + format + newName;
+//            return "上传成功";    //getScheme()：request.getScheme() 返回当前链接使用的协议
+//            //比如，一般应用返回http;SSL返回https;
+//            //getServerPort()：getServerPort获取的是URL请求的端口
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return "上传失败";
+//    }
 
     public String upload(MultipartFile[] uploadFiles, HttpServletRequest request) {
         String realPath =

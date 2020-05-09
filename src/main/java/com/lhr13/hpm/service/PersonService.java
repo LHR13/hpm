@@ -8,8 +8,12 @@ import com.lhr13.hpm.dao.PersonDAO;
 import com.lhr13.hpm.dao.SalaryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.Iterator;
 import java.util.List;
+
+@CrossOrigin
 @Service
 public class PersonService {
 
@@ -26,6 +30,7 @@ public class PersonService {
             CheckWork checkWork = new CheckWork();
             person.setSalary(salary);
             person.setCheckwork(checkWork);
+            person.setInfoState(1);
             salary.setPerson(person);
             checkWork.setPerson(person);
             personDAO.save(person);

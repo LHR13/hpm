@@ -15,13 +15,7 @@ public class SalaryService {
 
     public List<Salary> findAll() {
         List<Salary> salaries = salaryDAO.findAll();
-        Iterator<Salary> sy = salaries.iterator();
-        while (sy.hasNext()) {
-            Salary salary = sy.next();
-            if (salary.getPerson().getInfoState() == 0) {
-                sy.remove();
-            }
-        }
+        salaries.removeIf(salary -> salary.getPerson().getInfoState() == 0);
         return salaries;
     }
 

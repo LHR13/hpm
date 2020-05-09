@@ -3,10 +3,12 @@ package com.lhr13.hpm.controller;
 import com.lhr13.hpm.POJO.Person;
 import com.lhr13.hpm.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/people")
 public class PersonController {
@@ -22,6 +24,7 @@ public class PersonController {
         }
     }
 
+    @CrossOrigin
     @GetMapping("/delete")
     public String delByName(@RequestBody Person person) {
         if (personService.delete(person)) {
@@ -31,6 +34,7 @@ public class PersonController {
         }
     }
 
+    @CrossOrigin
     @PostMapping("/update")
     public String upById(@RequestBody Person person) {
         if (personService.update(person)) {
@@ -40,6 +44,7 @@ public class PersonController {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/findAll")
     public List<Person> findAll() {
         List<Person> people = personService.findAll();
@@ -47,11 +52,13 @@ public class PersonController {
     }
 
 
+    @CrossOrigin
     @GetMapping("/findByDep")
     public List<Person> findByDel(String dep) {
         return personService.findByDel(dep);
     }
 
+    @CrossOrigin
     @GetMapping("/findByName")
     public List<Person> findByName(String name) {
         return personService.findByName(name);
