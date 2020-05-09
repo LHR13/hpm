@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin
 @Configuration
 public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
     @Bean
@@ -39,6 +41,8 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+
 
     @Override       //关闭验证
     public void configure(HttpSecurity httpSecurity) throws Exception {
@@ -128,8 +132,9 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .csrf()
 //                .disable();
+//        http.addFilterAt(UserAuthenticationFilterBean(), UserAuthenticationFilter.class)
 //    }
-
+//
 //    @Override
 //    public void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(myUserDetailService);
@@ -137,6 +142,6 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 //
 //    @Override
 //    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("login_page2.html");
+//        web.ignoring().antMatchers("login");
 //    }
 }

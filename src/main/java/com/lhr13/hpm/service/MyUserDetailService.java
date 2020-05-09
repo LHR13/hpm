@@ -11,10 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
@@ -25,6 +27,7 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //从数据库读取用户
         List<User> users = userDAO.findByUsername(username);
+        System.out.println(username);
 
         for (User user : users) {
             if (user == null) {
