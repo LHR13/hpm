@@ -1,7 +1,5 @@
 package com.lhr13.hpm.controller;
 
-import com.lhr13.hpm.service.FileUploadService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,30 +8,41 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin
 @Controller
 public class FileUploadController {
 
-    @Autowired
-    private FileUploadService fileUploadService;
-
-    @RequestMapping(value = "/upload")
-    public String upfile(){
-        return "loadfile.html";
+    @GetMapping("/upload")
+    public String upload() {
+        return "upload.html";
     }
 
+    @ResponseBody
     @PostMapping("/upload")
-    public void upload(@RequestParam("filename") MultipartFile uploadFile) {
-        fileUploadService.upload(uploadFile);
-    }
-
-    @PostMapping("/uploads")
-    public void upload(MultipartFile[] uploadFiles, HttpServletRequest request) {
-        fileUploadService.upload(uploadFiles, request);
+    public String fileUpload(@RequestParam("file") MultipartFile file){
+        if(file.isEmpty()){
+            return "false";
+        }
+        String fileName = UUID.randomUUID().toString() + file.getOriginalFilename();
+        String path = "/" ;
+        System.out.println(path);
+        File dest = new File(path + fileName);
+        if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+            dest.getParentFile().mkdir();
+        }
+        try {
+            file.transferTo(dest);//保存文件
+            return "true";
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "false";
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "false";
+        }
     }
 }

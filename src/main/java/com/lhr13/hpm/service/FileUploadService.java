@@ -1,7 +1,11 @@
 package com.lhr13.hpm.service;
 
+import com.lhr13.hpm.POJO.PhotoPath;
+import com.lhr13.hpm.dao.PhotoPathDAO;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,81 +19,33 @@ import java.util.UUID;
 
 @Service
 public class FileUploadService {
+    private PhotoPathDAO photoPathDAO;
 
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd/");
-    List<String> filesPath = new ArrayList<>();
-
-    public String upload(MultipartFile file){
+    public String fileUpload(String fileName, MultipartFile file){
         if(file.isEmpty()){
             return "false";
         }
-        String fileName = file.getOriginalFilename();
-        int size = (int) file.getSize();
-        System.out.println(fileName + "-->" + size);
-        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\guidingbookfiles" ;
-        File dest = new File(path + "/" + fileName);
+        String newFileName = UUID.randomUUID().toString() + fileName;
+        String path = "/" ;
+        System.out.println(path);
+        File dest = new File(path + newFileName);
         if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
             dest.getParentFile().mkdir();
         }
         try {
-            file.transferTo(dest); //保存文件
-            return "上传成功";
-        } catch (Exception e) {
+            file.transferTo(dest);//保存文件
+            PhotoPath save =new PhotoPath();
+            save.setPpath(path + newFileName);
+            photoPathDAO.save(save);
+            return "true";
+        } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return "上传失败";
+            return "false";
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "false";
         }
-    }
-
-//    public String upload(MultipartFile uploadFile, HttpServletRequest request) {
-//        String realPath =
-//                request.getSession().getServletContext().getRealPath("/uploadFile/");
-//        String format = simpleDateFormat.format(new Date());
-//        File folder = new File(realPath + format);
-//        if (!folder.isDirectory()) {
-//            folder.mkdirs();
-//        }
-//        String oldName = uploadFile.getOriginalFilename();  //得到上传的文件名
-//        String newName = UUID.randomUUID().toString() +
-//                oldName.substring(oldName.lastIndexOf("."));
-//        try {
-//            uploadFile.transferTo(new File(folder, newName));   //springMVC封装的方法，用于将上传的文件保存在服务器上
-//            String filePath = request.getScheme() + "://" + request.getServerName() +
-//                    ":" + request.getServerPort() + "/uploadFile/" + format + newName;
-//            return "上传成功";    //getScheme()：request.getScheme() 返回当前链接使用的协议
-//            //比如，一般应用返回http;SSL返回https;
-//            //getServerPort()：getServerPort获取的是URL请求的端口
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return "上传失败";
-//    }
-
-    public String upload(MultipartFile[] uploadFiles, HttpServletRequest request) {
-        String realPath =
-                request.getSession().getServletContext().getRealPath("/uploadFiles/");
-        String format = simpleDateFormat.format(new Date());
-        File folder = new File(realPath + format);
-        if (!folder.isDirectory()) {
-            folder.mkdirs();
-        }
-        for (MultipartFile uploadFile : uploadFiles)
-        {
-            String oldName = uploadFile.getOriginalFilename();  //得到上传的文件名
-            String newName = UUID.randomUUID().toString() +
-                    oldName.substring(oldName.lastIndexOf("."));
-            try {
-                uploadFile.transferTo(new File(folder, newName));   //springMVC封装的方法，用于将上传的文件保存在服务器上
-                String filePath = request.getScheme() + "://" + request.getServerName() +
-                        ":" + request.getServerPort() + "/uploadFiles/" + format + newName;
-                filesPath.add(filePath);    //getScheme()：request.getScheme() 返回当前链接使用的协议
-                //比如，一般应用返回http;SSL返回https;
-                //getServerPort()：getServerPort获取的是URL请求的端口
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "上传失败";
-            }
-        }
-        return "上传成功";
     }
 }
