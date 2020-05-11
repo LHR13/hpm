@@ -8,6 +8,9 @@ import java.util.List;
 
 @Repository
 public interface UserDAO extends JpaRepository<User, Long> {
+
     List<User> findByUsername(String name);
     List<User> findAll();
+    Boolean existsByUsername(String username);
+
 }

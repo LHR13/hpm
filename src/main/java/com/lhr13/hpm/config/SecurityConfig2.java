@@ -62,13 +62,13 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
     @Override             //开启验证
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login_page2.html").permitAll()
+                .antMatchers("/login_page2.html", "/login", "/register").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
-                .loginPage("/login_page2.html")
+                .loginPage("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
@@ -146,6 +146,5 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("login_page2.html");
     }
-
 }
 
