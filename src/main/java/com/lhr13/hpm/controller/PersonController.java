@@ -3,10 +3,9 @@ package com.lhr13.hpm.controller;
 import com.lhr13.hpm.POJO.Person;
 import com.lhr13.hpm.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -63,5 +62,12 @@ public class PersonController {
     public List<Person> findByName(String name) {
         return personService.findByName(name);
     }
+
+    @GetMapping("/findByid")
+    public Optional<Person> findByid(Long id) {
+        return personService.findById(id);
+    }
+
+
 }
 

@@ -50,6 +50,8 @@ public class Person implements Serializable {
     private String mail;  //邮箱
     @Column
     private Integer infoState;  //状态，非0为存在
+    @Column
+    private String photoURL;    //照片URL
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn()
@@ -62,6 +64,14 @@ public class Person implements Serializable {
     private Salary salary;
 
     //构造函数和Getter、Setter
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
     public CheckWork getCheckwork() {
         return checkwork;
     }

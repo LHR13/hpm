@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @Service
@@ -85,5 +86,9 @@ public class PersonService {
             }
         }
         return people;
+    }
+
+    public Optional<Person> findById(Long id) {
+        return personDAO.findById(id);
     }
 }
