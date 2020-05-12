@@ -26,8 +26,8 @@ public class FileUploadController {
 
     @ResponseBody
     @PostMapping("/upload")
-    public void fileUpload(@RequestParam("username") String username, @RequestParam("file") MultipartFile file, HttpServletRequest req){
+    public String fileUpload(@RequestParam("username") String username, @RequestParam("file") MultipartFile file, HttpServletRequest req){
         String filename = file.getOriginalFilename();
-        fileUploadService.fileUpload(username, filename, file, req);
+        return fileUploadService.fileUpload(username, filename, file, req);
     }
 }

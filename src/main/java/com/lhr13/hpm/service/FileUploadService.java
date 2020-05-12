@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -35,8 +34,9 @@ public class FileUploadService {
             System.out.println(person.getName());
             String netPath = req.getScheme() + "://" + req.getServerName() + ":"
                     + req.getServerPort() + "/photo" + path + newFileName;
-            System.out.println(netPath);
-            return "上传成功";
+            person.setPhotoURL(netPath);
+            personDAO.save(person);
+            return netPath;
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
