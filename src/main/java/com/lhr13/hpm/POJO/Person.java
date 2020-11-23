@@ -29,15 +29,15 @@ public class Person implements Serializable {
     @Column
     private String political;   //政治面貌
     @Column
-    private Date jobdate;   //参加工作时间
+    private Date jobdate = Date.valueOf("0000-01-01");   //参加工作时间
     @Column
-    private Integer isProDoc;    //是否是执业医师，非0为是
+    private Integer isProDoc = Integer.valueOf(0);    //是否是执业医师，非0为是
     @Column
-    private Date PDdate;    //职业医师证书日期
+    private Date PDdate = Date.valueOf("0000-01-01");    //职业医师证书日期
     @Column
-    private Integer ismediastinus;    //是否是助理医师，非0为是
+    private Integer ismediastinus = 0;    //是否是助理医师，非0为是
     @Column
-    private Date MDSdate;   //助理医师证书日期
+    private Date MDSdate = Date.valueOf("0000-01-01");   //助理医师证书日期
     @Column
     private String CtfID;   //资格证书编号
     @Column

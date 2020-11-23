@@ -19,11 +19,11 @@ import java.util.Optional;
 public class PersonService {
 
     @Autowired
-    PersonDAO personDAO;
+    private PersonDAO personDAO;
     @Autowired
-    SalaryDAO salaryDAO;
+    private SalaryDAO salaryDAO;
     @Autowired
-    CheckWorkDAO checkWorkDAO;
+    private CheckWorkDAO checkWorkDAO;
 
     public Boolean add(Person person) {
         try {

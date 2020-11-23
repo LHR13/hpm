@@ -17,7 +17,8 @@ public class MailService {
     @Autowired
     private PersonDAO personDAO;
 
-    public void sendSimpleMail (Person person) throws Exception{
+    public void sendSimpleMail (String id) throws Exception{
+        Person person = personDAO.findById(Long.parseLong(id)).get();
         SimpleMailMessage simpleMailMessage1 = new SimpleMailMessage();
         simpleMailMessage1.setFrom("1309184697@qq.com");
         simpleMailMessage1.setTo(person.getMail());

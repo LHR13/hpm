@@ -13,21 +13,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+@CrossOrigin
 @Controller
 public class FileUploadController {
 
     @Autowired
     private FileUploadService fileUploadService;
 
-    @GetMapping("/upload")
-    public String upload() {
-        return "upload.html";
-    }
+//    @GetMapping("/upload")
+//    public String upload() {
+//        return "upload.html";
+//    }
 
     @ResponseBody
     @PostMapping("/upload")
-    public String fileUpload(@RequestParam("username") String username, @RequestParam("file") MultipartFile file, HttpServletRequest req){
+    public String fileUpload(@RequestParam("id") String id, @RequestParam("file") MultipartFile file, HttpServletRequest req){
         String filename = file.getOriginalFilename();
-        return fileUploadService.fileUpload(username, filename, file, req);
+        return fileUploadService.fileUpload(id, filename, file, req);
     }
 }

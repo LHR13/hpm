@@ -1,16 +1,17 @@
 package com.lhr13.hpm.service;
 
 import com.lhr13.hpm.POJO.Person;
-import com.lhr13.hpm.POJO.PhotoPath;
 import com.lhr13.hpm.dao.PersonDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.*;
 
+@CrossOrigin
 @Service
 public class FileUploadService {
     @Autowired
@@ -18,7 +19,7 @@ public class FileUploadService {
 
     public String fileUpload(String id, String fileName, MultipartFile file, HttpServletRequest req){
         if(file.isEmpty()){
-            return "false";
+            return "false,the file is empty";
         }
         String newFileName = UUID.randomUUID().toString() + fileName;
         String path = "/" ;
@@ -28,8 +29,6 @@ public class FileUploadService {
         }
         try {
             file.transferTo(dest);//保存文件
-            PhotoPath save =new PhotoPath();
-            save.setPpath(path + newFileName);
             Person person = personDAO.findById(Long.valueOf(id)).get();
             System.out.println(person.getName());
             String netPath = req.getScheme() + "://" + req.getServerName() + ":"

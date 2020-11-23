@@ -17,12 +17,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @Service
 public class ExportService {
 
@@ -107,31 +110,31 @@ public class ExportService {
             for (int i = 0; i < people.size(); i++) {
                 HSSFRow row = sheet.createRow(i + 1);
                 Person person = people.get(i);
-                row.createCell(0).setCellValue(person.getId());
-                row.createCell(1).setCellValue(person.getName());
-                row.createCell(2).setCellValue(person.getSex());
-                row.createCell(3).setCellValue(person.getDep());
-                row.createCell(4).setCellValue(person.getRoot());
-                row.createCell(5).setCellValue(person.getPolitical());
+                row.createCell(0).setCellValue(isNull(person.getId()));
+                row.createCell(1).setCellValue(isNull(person.getName()));
+                row.createCell(2).setCellValue(isNull(person.getSex()));
+                row.createCell(3).setCellValue(isNull(person.getDep()));
+                row.createCell(4).setCellValue(isNull(person.getRoot()));
+                row.createCell(5).setCellValue(isNull(person.getPolitical()));
                 HSSFCell dateCell = row.createCell(6);
-                        Date date = person.getJobdate();
+                        String date = isDNull(person.getJobdate());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        dateCell.setCellValue(sdf.format(date));
-                row.createCell(7).setCellValue(person.getIsProDoc() == 0 ? "否" : "是");
+                        dateCell.setCellValue(date);
+                row.createCell(7).setCellValue("0".equals(isNull(person.getIsProDoc())) ? "否" : "是");
                 HSSFCell dateCell1 = row.createCell(8);
-                        Date date1 = person.getPDdate();
+                        String date1 = isDNull(person.getPDdate());
                         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                        dateCell1.setCellValue(sdf1.format(date1));
-                row.createCell(9).setCellValue(person.getIsmediastinus() == 0 ? "否" : "是");
+                        dateCell1.setCellValue(date1);
+                row.createCell(9).setCellValue("0".equals(isNull(person.getIsmediastinus())) ? "否" : "是");
                 HSSFCell dateCell2 = row.createCell(10);
-                        Date date2 = person.getMDSdate();
+                        String date2 = isDNull(person.getMDSdate());
                         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-                        dateCell2.setCellValue(sdf2.format(date2));
-                row.createCell(11).setCellValue(person.getCtfID());
-                row.createCell(12).setCellValue(person.getReference());
-                row.createCell(13).setCellValue(person.getIDNum());
-                row.createCell(14).setCellValue(person.getPhone());
-                row.createCell(15).setCellValue(person.getMail());
+                        dateCell2.setCellValue(date2);
+                row.createCell(11).setCellValue(isNull(person.getCtfID()));
+                row.createCell(12).setCellValue(isNull(person.getReference()));
+                row.createCell(13).setCellValue(isNull(person.getIDNum()));
+                row.createCell(14).setCellValue(isNull(person.getPhone()));
+                row.createCell(15).setCellValue(isNull(person.getMail()));
             }
 
             headers.setContentDispositionFormData("attachment",
@@ -196,25 +199,30 @@ public class ExportService {
 
 
             for (int i = 0; i < salaries.size(); i++) {
-                HSSFRow row = sheet.createRow(i + 1);
                 Salary salary = salaries.get(i);
-                row.createCell(0).setCellValue(salary.getPerson().getId());
-                row.createCell(1).setCellValue(salary.getPerson().getName());
-                row.createCell(2).setCellValue(salary.getBwage());
-                row.createCell(3).setCellValue(salary.getMwage());
-                row.createCell(4).setCellValue(salary.getReward());
-                row.createCell(5).setCellValue(salary.getSubsidy());
-                row.createCell(6).setCellValue(salary.getSodeductions());
-                row.createCell(7).setCellValue(salary.getIncometax());
-                row.createCell(8).setCellValue(salary.getFine());
-                row.createCell(9).setCellValue((salary.getBwage() +
-                                                        salary.getMwage() +
-                                                        salary.getReward() +
-                                                        salary.getSubsidy() -
-                                                        salary.getSodeductions() -
-                                                        salary.getIncometax() -
-                                                        salary.getFine()));
-            }
+                if (salary.getPerson() != null) {
+                    HSSFRow row = sheet.createRow(i + 1);
+                    row.createCell(0).setCellValue(isNull(salary.getPerson().getId()));
+                    row.createCell(1).setCellValue(isNull(salary.getPerson().getName()));
+                    row.createCell(2).setCellValue(isNull(salary.getBwage()));
+                    row.createCell(3).setCellValue(isNull(salary.getMwage()));
+                    row.createCell(4).setCellValue(isNull(salary.getReward()));
+                    row.createCell(5).setCellValue(isNull(salary.getSubsidy()));
+                    row.createCell(6).setCellValue(isNull(salary.getSodeductions()));
+                    row.createCell(7).setCellValue(isNull(salary.getIncometax()));
+                    row.createCell(8).setCellValue(isNull(salary.getFine()));
+                    row.createCell(9).setCellValue(isNull((salary.getBwage() +
+                            salary.getMwage() +
+                            salary.getReward() +
+                            salary.getSubsidy() -
+                            salary.getSodeductions() -
+                            salary.getIncometax() -
+                            salary.getFine())));
+                    }else {
+                    continue;
+                    }
+                }
+
 
             headers.setContentDispositionFormData("attachment",
                     new String("员工工资表.xls".getBytes("UTF-8"), "iso-8859-1"));
@@ -277,13 +285,13 @@ public class ExportService {
             for (int i = 0; i < checkWorks.size(); i++) {
                 HSSFRow row = sheet.createRow(i + 1);
                 CheckWork checkWork = checkWorks.get(i);
-                row.createCell(0).setCellValue(checkWork.getPerson().getId());
-                row.createCell(1).setCellValue(checkWork.getPerson().getName());
-                row.createCell(2).setCellValue(checkWork.getNormal());
-                row.createCell(3).setCellValue(checkWork.getAbnormal());
-                row.createCell(4).setCellValue(checkWork.getLate());
-                row.createCell(5).setCellValue(checkWork.getGoearly());
-                row.createCell(6).setCellValue(checkWork.getLeave1());
+                row.createCell(0).setCellValue(isNull(checkWork.getPerson().getId()));
+                row.createCell(1).setCellValue(isNull(checkWork.getPerson().getName()));
+                row.createCell(2).setCellValue(isNull(checkWork.getNormal()));
+                row.createCell(3).setCellValue(isNull(checkWork.getAbnormal()));
+                row.createCell(4).setCellValue(isNull(checkWork.getLate()));
+                row.createCell(5).setCellValue(isNull(checkWork.getGoearly()));
+                row.createCell(6).setCellValue(isNull(checkWork.getLeave1()));
 
             }
 
@@ -305,4 +313,19 @@ public class ExportService {
         cell.setCellStyle(headStyle);
         return cell;
     }
+
+    private static String isNull(Object o) {
+        if (o == null) {
+            return "";
+        }
+        return o.toString();
+    }
+
+    private static String isDNull(java.sql.Date pDdate) {
+        if (pDdate == null) {
+            return "0002-12-31";
+        }
+        return pDdate.toString();
+    }
+
 }

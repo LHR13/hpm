@@ -17,9 +17,9 @@ public class PersonController {
     @PostMapping("/add")
     public String add(@RequestBody Person person) {
         if (personService.add(person)) {
-            return "添加成功";
+            return "success";
         }else {
-            return "添加失败";
+            return "error";
         }
     }
 
@@ -27,9 +27,9 @@ public class PersonController {
     @GetMapping("/delete")
     public String delByName(@RequestBody Person person) {
         if (personService.delete(person)) {
-            return "删除成功";
+            return "success";
         }else {
-            return "删除失败";
+            return "error";
         }
     }
 
@@ -37,9 +37,9 @@ public class PersonController {
     @PostMapping("/update")
     public String upById(@RequestBody Person person) {
         if (personService.update(person)) {
-            return "更新成功";
+            return "success";
         }else {
-            return "更新失败";
+            return "error";
         }
     }
 

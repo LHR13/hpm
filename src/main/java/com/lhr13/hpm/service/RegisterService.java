@@ -3,7 +3,6 @@ package com.lhr13.hpm.service;
 import com.lhr13.hpm.POJO.User;
 import com.lhr13.hpm.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -13,9 +12,6 @@ public class RegisterService {
     @Autowired
     private UserDAO userDAO;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public String register(String username, String password) {
         if (userDAO.existsByUsername(username)) {
             return "用户名已存在";
@@ -23,7 +19,7 @@ public class RegisterService {
         try {
             User user = new User();
             user.setUsername(username);
-            user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(password);
             userDAO.save(user);
             return "注册成功";
         }catch (Exception e) {

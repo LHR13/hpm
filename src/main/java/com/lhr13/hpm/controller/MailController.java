@@ -5,22 +5,22 @@ import com.lhr13.hpm.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("/mail")
 public class MailController {
     @Autowired
     MailService mailService;
 
     @GetMapping("/simplemsg")
-    public String sendSimpleMail(@RequestBody Person person) {
+    public @ResponseBody String sendSimpleMail(@RequestParam("id") String id) {
         try {
-            mailService.sendSimpleMail(person);
+            mailService.sendSimpleMail(id);
         } catch (Exception e) {
-            System.out.println("邮件发送失败 " + e.getMessage());;
-            return "邮件发送失败 " + e.getMessage();
+            System.out.println("error " + e.getMessage());;
+            return "error " + e.getMessage();
         }
-        return "邮件发送成功";
+        return "success";
 
     }
 }

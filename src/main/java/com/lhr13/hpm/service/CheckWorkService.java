@@ -1,13 +1,16 @@
 package com.lhr13.hpm.service;
 
 import com.lhr13.hpm.POJO.CheckWork;
+import com.lhr13.hpm.POJO.Person;
 import com.lhr13.hpm.dao.CheckWorkDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Iterator;
 import java.util.List;
 
+@CrossOrigin
 @Service
 public class CheckWorkService {
 
@@ -28,5 +31,17 @@ public class CheckWorkService {
 
     public List<CheckWork> findByName(String name) {
         return checkWorkDAO.findByPerson_Name(name);
+    }
+
+    public String update(CheckWork checkWork) {
+        CheckWork chtemp = checkWorkDAO.findById(checkWork.getId()).orElse(null);
+        if (chtemp != null) {
+            checkWork.setPerson(chtemp.getPerson());
+            chtemp = checkWork;
+            checkWorkDAO.save(chtemp);
+            return "success";
+        }else {
+            return "error";
+        }
     }
 }

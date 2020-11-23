@@ -12,6 +12,6 @@ public class UploadFilePathConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/photo/**").addResourceLocations("file:src\\main\\resources\\photo\\");
+        registry.addResourceHandler("/photo/**").addResourceLocations("file:/home/project/transation/oto");
     }
 }
